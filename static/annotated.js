@@ -1,3 +1,18 @@
+const resizeIframe = () => {
+  parent.postMessage({
+    messageType: "resize",
+    iframeHeight: document.body.scrollHeight + 50,
+    iframeUrl: window.location.href
+  }, "*");
+
+  parent.postMessage({
+    subject: "lti.frameResize",
+    message_id: Math.random().toString(36).substring(2),
+    height: document.body.scrollHeight + 50,
+    width: document.body.scrollWidth + 50,
+  }, "*");
+};
+
 $(function () {
   $('.annotated-example').each(function () {
     var element = $(this);
@@ -28,6 +43,8 @@ $(function () {
                 }
               }
             });
+
+            resizeIframe();
           });
           lineDiv.after($('<div></div>').addClass('annotated-comment').text(line.comment).attr('data-line', counter).hide());
         }
@@ -37,4 +54,6 @@ $(function () {
       });
     }
   });
+
+  setTimeout(() => resizeIframe(), 0);
 });
